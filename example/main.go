@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
 	"time"
 
 	"net/http"
@@ -48,6 +49,10 @@ var sqlMaxLife = gfig.NewDuration("db.MaxLifetime", time.Minute, "Time after whi
 			db.SetConnMaxLifetime(d)
 		}
 	})
+
+var x = gfig.NewString("AAAA.AAA", "FOOO", "AAAA").OnChange(func(s string) {
+	fmt.Println("AAAAAA", s)
+})
 
 const (
 	DCAny gfig.Datacenter = "Any"

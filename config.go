@@ -93,7 +93,7 @@ type Options struct {
 func (c *Collection) Init(opts Options) {
 	c.Options = opts
 	c.reconcile(nil)
-	//opts.Backend.Subscribe(c.reconcile, c.onError)
+	c.Backend.Subscribe(c.reconcile, c.onError)
 }
 
 func Init(opts Options) {

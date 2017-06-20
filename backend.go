@@ -42,6 +42,7 @@ func (m *memory) Subscribe(f func([]*TaggedValue), _ func(error)) {
 func (m *memory) SetOverride(v *TaggedValue) error {
 	m.Lock()
 	m.overrides = append(m.overrides, v)
+	m.publish()
 	m.Unlock()
 	return nil
 }
@@ -63,6 +64,7 @@ func (m *memory) ClearOverride(tv *TaggedValue) error {
 		newO = append(newO, o)
 	}
 	m.overrides = newO
+	m.publish()
 	m.Unlock()
 	return nil
 }

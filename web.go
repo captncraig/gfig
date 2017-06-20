@@ -13,13 +13,16 @@ func (c *Collection) Handler() http.Handler {
 			return
 		}
 		if r.Method == http.MethodGet && r.URL.Path == "/" {
-			w.Header().Set("Content-Type", "text/html")
+			w.Header().Set("Content-Type", "text/html; charset=utf-8")
 			w.Write([]byte(indexHtml))
 			return
 		}
 		if r.Method == http.MethodGet && r.URL.Path == "/get" {
-			w.Header().Set("Content-Type", "application/json")
 			c.serveJson(w)
+			return
+		}
+		if r.Method == http.MethodPost && r.URL.Path == "/set" {
+			c.addOverride(w, r)
 			return
 		}
 		http.NotFound(w, r)
@@ -28,6 +31,25 @@ func (c *Collection) Handler() http.Handler {
 
 func Handler() http.Handler {
 	return defaultCollection.Handler()
+}
+
+func (c *Collection) addOverride(w http.ResponseWriter, r *http.Request) {
+	r.ParseForm()
+	name := r.FormValue("settingName")
+	dc := Datacenter(r.FormValue("dataCenter"))
+	val := r.FormValue("value")
+	tv := &TaggedValue{
+		Datacenter: dc,
+		Name:       name,
+		Tier:       c.Tier,
+		Value:      val,
+	}
+	err := c.Backend.SetOverride(tv)
+	if err != nil {
+		c.onError(err)
+		http.Error(w, err.Error(), 500)
+		return
+	}
 }
 
 func (c *Collection) serveJson(w http.ResponseWriter) {
@@ -56,8 +78,35 @@ func (c *Collection) serveJson(w http.ResponseWriter) {
 			AllOverrides:    []*jsonOverride{},
 		}
 		setts.Settings = append(setts.Settings, js)
+		for _, d := range s.Metadata().Defaults {
+			js.AllDefaults = append(js.AllDefaults, &jsonOverride{
+				Tier:       d.Tier,
+				DataCenter: d.Datacenter,
+				Name:       d.Name,
+				Value:      d.Value,
+				IsDefault:  true,
+			})
+		}
+		os, err := c.Backend.GetOverrides()
+		if err != nil {
+			c.onError(err)
+			http.Error(w, err.Error(), 500)
+			return
+		}
+		for _, o := range os {
+			if o.Name != m.Name {
+				continue
+			}
+			js.AllOverrides = append(js.AllOverrides, &jsonOverride{
+				Tier:       o.Tier,
+				DataCenter: o.Datacenter,
+				Name:       o.Name,
+				Value:      o.Value,
+				IsOverride: true,
+			})
+		}
 	}
-
+	w.Header().Set("Content-Type", "application/json")
 	enc := json.NewEncoder(w)
 	enc.Encode(setts)
 }
@@ -91,9 +140,12 @@ type jsonOverride struct {
 	Name            string     `json:"name"`
 }
 
-const indexHtml = `<html>
+const indexHtml = `<!DOCTYPE html>
+<html>
 <head>
-	<script src="/settings.js"></script>
+
+    
+<script src="https://cdn.sstatic.net/clc/admin/settings-panel.min.js?v=149fe996d3f8"></script>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 </head>
 <body>
