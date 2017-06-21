@@ -154,7 +154,8 @@ END`
 
 func (s *sqlBackend) ClearOverride(t *gfig.TaggedValue) error {
 	const q = "DELETE FROM [dbo].[%s.settings] WHERE Datacenter = ?1 AND Tier = ?2 AND Name = ?3"
-	_, err := s.d.Exec(fmt.Sprintf(q, s.appName), t.Datacenter, t.Tier, t.Name)
+	query := fmt.Sprintf(q, s.appName)
+	_, err := s.d.Exec(query, t.Datacenter, t.Tier, t.Name)
 	if err == nil {
 		select {
 		case s.trigger <- true:

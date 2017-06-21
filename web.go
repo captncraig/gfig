@@ -26,6 +26,10 @@ func (c *Collection) Handler() http.Handler {
 			c.addOverride(w, r)
 			return
 		}
+		if r.Method == http.MethodPost && r.URL.Path == "/clear" {
+			c.clearOverride(w, r)
+			return
+		}
 		http.NotFound(w, r)
 	})
 }
@@ -55,6 +59,23 @@ func (c *Collection) addOverride(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	err := c.Backend.SetOverride(tv)
+	if err != nil {
+		c.onError(err)
+		http.Error(w, err.Error(), 500)
+		return
+	}
+}
+
+func (c *Collection) clearOverride(w http.ResponseWriter, r *http.Request) {
+	r.ParseForm()
+	name := r.FormValue("settingName")
+	dc := Datacenter(r.FormValue("dataCenter"))
+	tv := &TaggedValue{
+		Datacenter: dc,
+		Name:       name,
+		Tier:       c.Tier,
+	}
+	err := c.Backend.ClearOverride(tv)
 	if err != nil {
 		c.onError(err)
 		http.Error(w, err.Error(), 500)
