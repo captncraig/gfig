@@ -2,12 +2,17 @@ package main
 
 import (
 	"database/sql"
+	"flag"
 	"fmt"
 	"time"
 
 	"net/http"
 
+	"log"
+
 	"github.com/captncraig/gfig"
+	setsql "github.com/captncraig/gfig/sql"
+	_ "github.com/denisenkom/go-mssqldb"
 )
 
 // make some simple fields
@@ -67,13 +72,30 @@ const (
 	TProd  gfig.Tier = "Prod"
 )
 
+var conn = flag.String("db", "", "db connection string")
+
 func main() {
+	flag.Parse()
+	db, err := sql.Open("mssql", *conn)
+	if err != nil {
+		log.Fatal(err)
+	}
+	bak, err := setsql.New(db, "MyTestApp")
+	if err != nil {
+		log.Fatal(err)
+	}
 	gfig.Init(gfig.Options{
 		AppName:        "MyTestApp",
 		Datacenter:     DCNY,
 		Tier:           TDev,
-		Backend:        gfig.NewMemoryStore(),
+		Backend:        bak,
 		AllDatacenters: []gfig.Datacenter{DCAny, DCNY, DCCO},
 	})
+	go func() {
+		for {
+			fmt.Println("LLLL", x.Value())
+			time.Sleep(time.Second)
+		}
+	}()
 	http.ListenAndServe(":8080", gfig.Handler())
 }

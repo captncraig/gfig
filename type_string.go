@@ -44,3 +44,7 @@ func (s *String) OnChange(f func(string)) *String {
 	s.addCallback(f)
 	return s
 }
+
+func (s *String) Validate(raw string) error {
+	return nil
+}

@@ -2,6 +2,7 @@ package gfig
 
 import (
 	"fmt"
+	"hash/fnv"
 	"log"
 	"reflect"
 )
@@ -20,8 +21,12 @@ type Setting interface {
 	Name() string
 	Raw() string
 	Metadata() Metadata
-	Set(raw string) (interface{}, error)
 	Trigger(interface{})
+
+	// Implemented by specific types:
+
+	Set(raw string) (interface{}, error)
+	Validate(raw string) error
 }
 
 type Base struct {
@@ -73,6 +78,20 @@ type TaggedValue struct {
 	Value      string
 }
 
+func (t *TaggedValue) Hash() string {
+	return fmt.Sprintf("%s|%s|%s|%s", t.Datacenter, t.Tier, t.Name, t.Value)
+}
+
+type TaggedValues []*TaggedValue
+
+func (t TaggedValues) Hash() uint32 {
+	h := fnv.New32a()
+	for _, tv := range t {
+		h.Write([]byte(tv.Hash() + "!"))
+	}
+	return h.Sum32()
+}
+
 type Datacenter string
 type Tier string
 
@@ -92,8 +111,16 @@ type Options struct {
 
 func (c *Collection) Init(opts Options) {
 	c.Options = opts
-	c.reconcile(nil)
 	c.Backend.Subscribe(c.reconcile, c.onError)
+}
+
+func (c *Collection) getByName(name string) Setting {
+	for _, s := range c.settings {
+		if s.Name() == name {
+			return s
+		}
+	}
+	return nil
 }
 
 func Init(opts Options) {
@@ -105,29 +132,28 @@ const (
 	ANYTIER Tier       = "Any"
 )
 
-func (c *Collection) isMatch(tv *TaggedValue) bool {
-	if tv.Tier == ANYTIER || tv.Tier == c.Tier {
-		if tv.Datacenter == ANYDC || tv.Datacenter == c.Datacenter {
-			return true
-		}
-	}
-	return false
-}
-
-func (c *Collection) reconcile(overrides []*TaggedValue) {
+func (c *Collection) reconcile(overrides TaggedValues) {
 	for _, setting := range c.settings {
 		// base default
 		chosenValue := setting.Metadata().Default
+		var bestMatch Datacenter
 		// specific defaults
 		for _, tv := range setting.Metadata().Defaults {
-			if tv.Name == setting.Name() && c.isMatch(tv) {
-				chosenValue = tv.Value
+			if tv.Name == setting.Name() && tv.Tier == c.Tier {
+				if tv.Datacenter == c.Datacenter || (bestMatch == "" && tv.Datacenter == ANYDC) {
+					chosenValue = tv.Value
+					bestMatch = tv.Datacenter
+				}
 			}
 		}
 		// overrides
+		bestMatch = ""
 		for _, tv := range overrides {
-			if tv.Name == setting.Name() && c.isMatch(tv) {
-				chosenValue = tv.Value
+			if tv.Name == setting.Name() && tv.Tier == c.Tier {
+				if tv.Datacenter == c.Datacenter || (bestMatch == "" && tv.Datacenter == ANYDC) {
+					chosenValue = tv.Value
+					bestMatch = tv.Datacenter
+				}
 			}
 		}
 		// see if there's any difference

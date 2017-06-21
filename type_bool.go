@@ -28,12 +28,12 @@ type Bool struct {
 }
 
 func (b *Bool) Value() bool {
-	return d.value
+	return b.value
 }
 
 func (b *Bool) OnChange(f func(bool)) *Bool {
-	d.addCallback(f)
-	return d
+	b.addCallback(f)
+	return b
 }
 
 func (b *Bool) Set(in string) (interface{}, error) {
@@ -53,4 +53,11 @@ func (b *Bool) Set(in string) (interface{}, error) {
 func (d *Bool) SetDefault(t Tier, dc Datacenter, v bool) *Bool {
 	d.setDefault(t, dc, fmt.Sprint(v))
 	return d
+}
+
+func (b *Bool) Validate(raw string) error {
+	if raw != "true" && raw != "false" {
+		return fmt.Errorf("Bool must be 'true' or 'false'")
+	}
+	return nil
 }

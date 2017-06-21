@@ -53,3 +53,8 @@ func (i *Int) SetDefault(t Tier, d Datacenter, v int) *Int {
 	i.setDefault(t, d, fmt.Sprint(v))
 	return i
 }
+
+func (i *Int) Validate(raw string) error {
+	_, err := strconv.Atoi(raw)
+	return err
+}

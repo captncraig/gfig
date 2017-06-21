@@ -6,10 +6,10 @@ import (
 
 type Backend interface {
 	// Get all overrides now. Try not to rely on cache.
-	GetOverrides() ([]*TaggedValue, error)
+	GetOverrides() (TaggedValues, error)
 
 	// Subscribe to override changes.
-	Subscribe(func([]*TaggedValue), func(error))
+	Subscribe(func(TaggedValues), func(error))
 
 	SetOverride(*TaggedValue) error
 
@@ -21,17 +21,17 @@ func NewMemoryStore() Backend {
 }
 
 type memory struct {
-	overrides []*TaggedValue
-	subs      []func([]*TaggedValue)
+	overrides TaggedValues
+	subs      []func(TaggedValues)
 	sync.Mutex
 }
 
-func (m *memory) GetOverrides() ([]*TaggedValue, error) {
+func (m *memory) GetOverrides() (TaggedValues, error) {
 	return m.overrides, nil
 }
 
 // Subscribe to override changes.
-func (m *memory) Subscribe(f func([]*TaggedValue), _ func(error)) {
+func (m *memory) Subscribe(f func(TaggedValues), _ func(error)) {
 	m.Lock()
 	if f != nil {
 		m.subs = append(m.subs, f)

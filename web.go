@@ -44,6 +44,15 @@ func (c *Collection) addOverride(w http.ResponseWriter, r *http.Request) {
 		Tier:       c.Tier,
 		Value:      val,
 	}
+	setting := c.getByName(name)
+	if setting == nil {
+		http.Error(w, "no such setting", http.StatusNotFound)
+		return
+	}
+	if err := setting.Validate(val); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
 	err := c.Backend.SetOverride(tv)
 	if err != nil {
 		c.onError(err)

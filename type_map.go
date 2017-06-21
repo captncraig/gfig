@@ -23,16 +23,36 @@ func (c *Collection) NewMap(name string, defaultValue map[string]string, descrip
 }
 
 func formatMap(m map[string]string) string {
-	s := ""
 	keys := []string{}
 	for k := range m {
 		keys = append(keys, k)
 	}
 	sort.Strings(keys)
+	// add value to each item in place
 	for i, k := range keys {
 		keys[i] += " " + m[k]
 	}
 	return strings.Join(keys, "\n")
+}
+
+func parseMap(raw string) (map[string]string, error) {
+	m := map[string]string{}
+	for _, line := range strings.Split(raw, "\n") {
+		line = strings.TrimSpace(line)
+		if line == "" {
+			continue
+		}
+		parts := strings.Split(line, " ")
+		if len(parts) != 2 {
+			return nil, fmt.Errorf("invalid map line %s. Needs exactly one space", line)
+		}
+		k, v := parts[0], parts[1]
+		if _, ok := m[k]; ok {
+			return nil, fmt.Errorf("key %s specified multiple times in map", k)
+		}
+		m[k] = v
+	}
+	return m, nil
 }
 
 func NewMap(name string, defaultValue map[string]string, description string) *Map {
@@ -54,11 +74,15 @@ func (m *Map) OnChange(f func(map[string]string)) *Map {
 }
 
 func (m *Map) Set(in string) (interface{}, error) {
-
-	return in, nil
+	return parseMap(in)
 }
 
 func (m *Map) SetDefault(t Tier, dc Datacenter, v map[string]string) *Map {
 	m.setDefault(t, dc, formatMap(v))
 	return m
+}
+
+func (m *Map) Validate(raw string) error {
+	_, err := parseMap(raw)
+	return err
 }

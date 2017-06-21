@@ -53,3 +53,8 @@ func (d *Duration) SetDefault(t Tier, dc Datacenter, v time.Duration) *Duration 
 	d.setDefault(t, dc, fmt.Sprint(v))
 	return d
 }
+
+func (d *Duration) Validate(raw string) error {
+	_, err := time.ParseDuration(raw)
+	return err
+}
