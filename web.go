@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strings"
 )
 
 func (c *Collection) Handler() http.Handler {
@@ -85,6 +86,9 @@ func (c *Collection) serveJson(w http.ResponseWriter) {
 			AllowsOverrides: allow,
 			AllDefaults:     []*jsonOverride{},
 			AllOverrides:    []*jsonOverride{},
+		}
+		if strings.HasSuffix(js.TypeName, "Bool") {
+			js.TypeName = "System.Boolean"
 		}
 		setts.Settings = append(setts.Settings, js)
 		for _, d := range s.Metadata().Defaults {

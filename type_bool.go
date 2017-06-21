@@ -1,6 +1,7 @@
 package gfig
 
 import "fmt"
+import "strings"
 
 func (c *Collection) NewBool(name string, defaultValue bool, description string) *Bool {
 	s := &Bool{
@@ -37,6 +38,7 @@ func (b *Bool) OnChange(f func(bool)) *Bool {
 }
 
 func (b *Bool) Set(in string) (interface{}, error) {
+	in = strings.ToLower(in)
 	v := false
 	if in == "true" {
 		v = true
@@ -56,6 +58,7 @@ func (d *Bool) SetDefault(t Tier, dc Datacenter, v bool) *Bool {
 }
 
 func (b *Bool) Validate(raw string) error {
+	raw = strings.ToLower(raw)
 	if raw != "true" && raw != "false" {
 		return fmt.Errorf("Bool must be 'true' or 'false'")
 	}

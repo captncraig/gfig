@@ -76,7 +76,6 @@ func (s *sqlBackend) onErr(err error) {
 }
 
 func (s *sqlBackend) getInternal() (gfig.TaggedValues, error) {
-	fmt.Println("GI")
 	const q = `select Datacenter, Value, Tier, Name from [dbo].[%s.settings]`
 	query := fmt.Sprintf(q, s.appName)
 	rows, err := s.d.Query(query)
@@ -96,7 +95,6 @@ func (s *sqlBackend) getInternal() (gfig.TaggedValues, error) {
 	if err := rows.Err(); err != nil {
 		return nil, err
 	}
-	fmt.Println(setts)
 	return setts, nil
 }
 
