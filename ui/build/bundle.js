@@ -1,13 +1,38 @@
 (function () {
 'use strict';
 
+/*! *****************************************************************************
+Copyright (c) Microsoft Corporation. All rights reserved.
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+this file except in compliance with the License. You may obtain a copy of the
+License at http://www.apache.org/licenses/LICENSE-2.0
+
+THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
+WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
+MERCHANTABLITY OR NON-INFRINGEMENT.
+
+See the Apache Version 2.0 License for specific language governing permissions
+and limitations under the License.
+***************************************************************************** */
+/* global Reflect, Promise */
+
+var extendStatics = Object.setPrototypeOf ||
+    ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+    function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+
+function __extends(d, b) {
+    extendStatics(d, b);
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+}
+
 /*
 object-assign
 (c) Sindre Sorhus
 @license MIT
 */
 
-/* eslint-disable no-unused-vars */
 var getOwnPropertySymbols = Object.getOwnPropertySymbols;
 var hasOwnProperty = Object.prototype.hasOwnProperty;
 var propIsEnumerable = Object.prototype.propertyIsEnumerable;
@@ -101,13 +126,6 @@ var index$1 = shouldUseNative() ? Object.assign : function (target, source) {
  *
  * 
  */
-/**
- * WARNING: DO NOT manually require this module.
- * This is a replacement for `invariant(...)` used by the error code system
- * and will _only_ be required by the corresponding babel pass.
- * It always throws.
- */
-
 function reactProdInvariant(code) {
   var argCount = arguments.length - 1;
 
@@ -127,17 +145,6 @@ function reactProdInvariant(code) {
 }
 
 var reactProdInvariant_1 = reactProdInvariant;
-
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- * 
- */
 
 function makeEmptyFunction(arg) {
   return function () {
@@ -291,17 +298,6 @@ var emptyObject_1 = emptyObject$1;
  *
  */
 
-/**
- * Use invariant() to assert state which your program assumes to be true.
- *
- * Provide sprintf-style format (only %s is supported) and arguments
- * to provide information about what broke and what you were
- * expecting.
- *
- * The invariant message will be stripped in production, but the invariant
- * will remain to ensure logic does not differ in production.
- */
-
 var validateFormat = function validateFormat(format) {};
 
 function invariant$1(condition, format, a, b, c, d, e, f) {
@@ -343,9 +339,6 @@ var _assign$1 = index$1;
 var ReactNoopUpdateQueue = ReactNoopUpdateQueue_1;
 
 var emptyObject = emptyObject_1;
-/**
- * Base class helpers for the updating state of a component.
- */
 function ReactComponent(props, context, updater) {
   this.props = props;
   this.context = context;
@@ -416,9 +409,6 @@ ReactComponent.prototype.forceUpdate = function (callback) {
  * we would like to deprecate them, we're not going to move them over to this
  * modern base class. Instead, we define a getter that warns if it's accessed.
  */
-/**
- * Base class helpers for the updating state of a component.
- */
 function ReactPureComponent(props, context, updater) {
   // Duplicated from ReactComponent.
   this.props = props;
@@ -444,13 +434,6 @@ var ReactBaseClasses$1 = {
 
 var _prodInvariant$1 = reactProdInvariant_1;
 
-/**
- * Static poolers. Several custom versions for each potential number of
- * arguments. A completely generic pooler is easy to implement, but would
- * require accessing the `arguments` object. In each of these, `this` refers to
- * the Class itself, not an instance. If any others are needed, simply add them
- * here, or in their own files.
- */
 var oneArgumentPooler = function (copyFieldsFrom) {
   var Klass = this;
   if (Klass.instancePool.length) {
@@ -550,12 +533,6 @@ var PooledClass_1 = PooledClass$1;
  * 
  */
 
-/**
- * Keeps track of the current owner.
- *
- * The current owner is the component who should own any components that are
- * currently being constructed.
- */
 var ReactCurrentOwner$1 = {
   /**
    * @internal
@@ -576,9 +553,6 @@ var ReactCurrentOwner_1 = ReactCurrentOwner$1;
  *
  * 
  */
-
-// The Symbol used to tag the ReactElement type. If there is no native Symbol
-// nor polyfill, then a plain number is used for performance.
 
 var REACT_ELEMENT_TYPE$1 = typeof Symbol === 'function' && Symbol['for'] && Symbol['for']('react.element') || 0xeac7;
 
@@ -607,26 +581,6 @@ function hasValidKey(config) {
   return config.key !== undefined;
 }
 
-/**
- * Factory method to create a new React element. This no longer adheres to
- * the class pattern, so do not use new to call it. Also, no instanceof check
- * will work. Instead test $$typeof field against Symbol.for('react.element') to check
- * if something is a React Element.
- *
- * @param {*} type
- * @param {*} key
- * @param {string|object} ref
- * @param {*} self A *temporary* helper to detect places where `this` is
- * different from the `owner` when React.createElement is called, so that we
- * can warn. We want to get rid of owner and replace string `ref`s with arrow
- * functions, and as long as `this` and owner are the same, there will be no
- * change in behavior.
- * @param {*} source An annotation object (added by a transpiler or otherwise)
- * indicating filename, line number, and/or other information.
- * @param {*} owner
- * @param {*} props
- * @internal
- */
 var ReactElement$2 = function (type, key, ref, self, source, owner, props) {
   var element = {
     // This tag allow us to uniquely identify this as a React Element
@@ -814,8 +768,6 @@ var ReactElement_1 = ReactElement$2;
  * 
  */
 
-/* global Symbol */
-
 var ITERATOR_SYMBOL = typeof Symbol === 'function' && Symbol.iterator;
 var FAUX_ITERATOR_SYMBOL = '@@iterator'; // Before Symbol spec.
 
@@ -851,13 +803,6 @@ var getIteratorFn_1 = getIteratorFn$1;
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * 
- */
-
-/**
- * Escape and wrap key so it is safe to use as a reactid
- *
- * @param {string} key to be escaped.
- * @return {string} the escaped key.
  */
 
 function escape(key) {
@@ -909,12 +854,16 @@ var SEPARATOR = '.';
 var SUBSEPARATOR = ':';
 
 /**
- * Generate a key string that identifies a component within a set.
+ * This is inlined from ReactElement since this file is shared between
+ * isomorphic and renderers. We could extract this to a
  *
- * @param {*} component A component that could contain a manual key.
- * @param {number} index Index that is used if a manual key is not provided.
- * @return {string}
  */
+
+/**
+ * TODO: Test that a single child and an array with one item have the same key
+ * pattern.
+ */
+
 function getComponentKey(component, index) {
   // Do some typechecking here since we call this blindly. We want to ensure
   // that we don't block potential future ES APIs.
@@ -1209,11 +1158,6 @@ var ReactElement$3 = ReactElement_1;
  * @private
  */
 var createDOMFactory = ReactElement$3.createFactory;
-/**
- * Creates a mapping from supported HTML tags to `ReactDOMComponent` classes.
- *
- * @public
- */
 var ReactDOMFactories$1 = {
   a: createDOMFactory('a'),
   abbr: createDOMFactory('abbr'),
@@ -1375,17 +1319,6 @@ var ReactPropTypesSecret_1 = ReactPropTypesSecret$1;
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 
-/**
- * Assert that the values match with the type specs.
- * Error messages are memorized and will only be shown once.
- *
- * @param {object} typeSpecs Map of name to a ReactPropType
- * @param {object} values Runtime values that need to be type-checked
- * @param {string} location e.g. "prop", "context", "child context"
- * @param {string} componentName Name of the component for error messages.
- * @param {?Function} getStack Returns the component stack.
- * @private
- */
 function checkPropTypes$1(typeSpecs, values, location, componentName, getStack) {
   
 }
@@ -1892,10 +1825,6 @@ function checkType(isRequired, props, propName, componentName, location, propFul
   return ReactPropTypes;
 };
 
-// React 15.5 references this module, and assumes PropTypes are still callable in production.
-// Therefore we re-export development-only version with all the PropTypes checks here.
-// However if one is migrating to the `prop-types` npm library, they will go through the
-// `index.js` entry point, and it will branch depending on the environment.
 var factory$1 = factoryWithTypeCheckers;
 var factory_1 = function(isValidElement) {
   // It is still allowed in 15.5.
@@ -2625,20 +2554,6 @@ var _prodInvariant$3 = reactProdInvariant_1;
 
 var ReactElement$4 = ReactElement_1;
 
-/**
- * Returns the first child in a collection of children and verifies that there
- * is only one child in the collection.
- *
- * See https://facebook.github.io/react/docs/top-level-api.html#react.children.only
- *
- * The current implementation of this function assumes that a single child gets
- * passed without a wrapper, but the purpose of this helper function is to
- * abstract away the particular structure of children.
- *
- * @param {?object} children Child collection structure.
- * @return {ReactElement} The first and only `ReactElement` contained in the
- * structure.
- */
 function onlyChild$1(children) {
   !ReactElement$4.isValidElement(children) ? _prodInvariant$3('143') : void 0;
   return children;
@@ -2662,7 +2577,7 @@ var createElement = ReactElement.createElement;
 var createFactory = ReactElement.createFactory;
 var cloneElement = ReactElement.cloneElement;
 
-var __spread = _assign;
+var __spread$1 = _assign;
 var createMixin = function (mixin) {
   return mixin;
 };
@@ -2699,13 +2614,14 @@ var React = {
   version: ReactVersion,
 
   // Deprecated hook for JSX spread, don't use this for anything.
-  __spread: __spread
+  __spread: __spread$1
 };
 
 var React_1 = React;
 
 var react$1 = React_1;
 
+var react_1 = react$1.Component;
 var react_3 = react$1.createElement;
 
 /**
@@ -2718,13 +2634,6 @@ var react_3 = react$1.createElement;
  *
  * 
  */
-/**
- * WARNING: DO NOT manually require this module.
- * This is a replacement for `invariant(...)` used by the error code system
- * and will _only_ be required by the corresponding babel pass.
- * It always throws.
- */
-
 function reactProdInvariant$1(code) {
   var argCount = arguments.length - 1;
 
@@ -3205,9 +3114,6 @@ var ARIADOMPropertyConfig_1 = ARIADOMPropertyConfig$1;
 
 var _prodInvariant$7 = reactProdInvariant_1$2;
 
-/**
- * Injectable ordering of event plugins.
- */
 var eventPluginOrder = null;
 
 /**
@@ -3486,14 +3392,6 @@ var _prodInvariant$8 = reactProdInvariant_1$2;
 
 var ReactErrorUtils$1 = ReactErrorUtils_1;
 
-/**
- * Injected dependencies:
- */
-
-/**
- * - `ComponentTree`: [required] Module that can convert between React instances
- *   and actual node references.
- */
 var ComponentTree;
 var TreeTraversal;
 var injection = {
@@ -3518,13 +3416,6 @@ function isStartish(topLevelType) {
   return topLevelType === 'topMouseDown' || topLevelType === 'topTouchStart';
 }
 
-/**
- * Dispatch the event to the listener.
- * @param {SyntheticEvent} event SyntheticEvent to handle
- * @param {boolean} simulated If the event is simulated (changes exn behavior)
- * @param {function} listener Application-level callback
- * @param {*} inst Internal component instance
- */
 function executeDispatch(event, simulated, listener, inst) {
   var type = event.type || 'unknown-event';
   event.currentTarget = EventPluginUtils$2.getNodeFromInstance(inst);
@@ -3666,19 +3557,6 @@ var EventPluginUtils_1 = EventPluginUtils$2;
 
 var _prodInvariant$9 = reactProdInvariant_1$2;
 
-/**
- * Accumulates items that must not be null or undefined into the first one. This
- * is used to conserve memory by avoiding array allocations, and thus sacrifices
- * API cleanness. Since `current` can be null before being passed in and not
- * null after this function, make sure to assign it back to `current`:
- *
- * `a = accumulateInto(a, b);`
- *
- * This API should be sparingly used. Try `accumulate` for something cleaner.
- *
- * @return {*|array<*>} An accumulation of items.
- */
-
 function accumulateInto$2(current, next) {
   !(next != null) ? _prodInvariant$9('30') : void 0;
 
@@ -3718,14 +3596,6 @@ var accumulateInto_1 = accumulateInto$2;
  * 
  */
 
-/**
- * @param {array} arr an "accumulation" of items which is either an Array or
- * a single item. Useful when paired with the `accumulate` module. This is a
- * simple utility that allows us to reason about a collection of items, but
- * handling the case when there is exactly one item (and we do not need to
- * allocate an array).
- */
-
 function forEachAccumulated$2(arr, cb, scope) {
   if (Array.isArray(arr)) {
     arr.forEach(cb, scope);
@@ -3744,9 +3614,6 @@ var ReactErrorUtils = ReactErrorUtils_1;
 
 var accumulateInto$1 = accumulateInto_1;
 var forEachAccumulated$1 = forEachAccumulated_1;
-/**
- * Internal store for event listeners
- */
 var listenerBank = {};
 
 /**
@@ -4149,13 +4016,6 @@ var ExecutionEnvironment_1 = ExecutionEnvironment$2;
 
 var _prodInvariant$10 = reactProdInvariant_1$2;
 
-/**
- * Static poolers. Several custom versions for each potential number of
- * arguments. A completely generic pooler is easy to implement, but would
- * require accessing the `arguments` object. In each of these, `this` refers to
- * the Class itself, not an instance. If any others are needed, simply add them
- * here, or in their own files.
- */
 var oneArgumentPooler$1 = function (copyFieldsFrom) {
   var Klass = this;
   if (Klass.instancePool.length) {
@@ -4497,12 +4357,6 @@ _assign$5(SyntheticEvent$1.prototype, {
 
 SyntheticEvent$1.Interface = EventInterface;
 
-/**
- * Helper to reduce boilerplate when creating subclasses.
- *
- * @param {function} Class
- * @param {?object} Interface
- */
 SyntheticEvent$1.augmentClass = function (Class, Interface) {
   var Super = this;
 
@@ -4523,6 +4377,14 @@ SyntheticEvent$1.augmentClass = function (Class, Interface) {
 PooledClass$4.addPoolingTo(SyntheticEvent$1, PooledClass$4.fourArgumentPooler);
 
 var SyntheticEvent_1 = SyntheticEvent$1;
+
+/**
+  * Helper to nullify syntheticEvent instance properties when destructing
+  *
+  * @param {object} SyntheticEvent
+  * @param {String} propName
+  * @return {object} defineProperty object
+  */
 
 var SyntheticEvent = SyntheticEvent_1;
 
@@ -4951,18 +4813,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var PooledClass$6 = PooledClass_1$2;
 
-/**
- * A specialized pseudo-event module to help keep track of components waiting to
- * be notified when their DOM representations are available for use.
- *
- * This implements `PooledClass`, so you should never need to instantiate this.
- * Instead, use `CallbackQueue.getPooled()`.
- *
- * @class ReactMountReady
- * @implements PooledClass
- * @internal
- */
-
 var CallbackQueue$1 = function () {
   function CallbackQueue(arg) {
     _classCallCheck(this, CallbackQueue);
@@ -5071,11 +4921,6 @@ var ReactFeatureFlags_1 = ReactFeatureFlags$1;
 
 var _prodInvariant$13 = reactProdInvariant_1$2;
 
-/**
- * @param {?object} object
- * @return {boolean} True if `object` is a valid owner.
- * @final
- */
 function isValidOwner(object) {
   return !!(object && typeof object.attachRef === 'function' && typeof object.detachRef === 'function');
 }
@@ -5235,10 +5080,6 @@ var ReactRef_1 = ReactRef$1;
  */
 
 var ReactRef = ReactRef_1;
-/**
- * Helper to call ReactRef.attachRefs with this composite component, split out
- * to avoid allocations in the transaction mount-ready queue.
- */
 function attachRefs() {
   ReactRef.attachRefs(this, this._currentElement);
 }
@@ -5917,14 +5758,6 @@ var inputValueTracking_1 = inputValueTracking$1;
  *
  */
 
-/**
- * Gets the target node from a native browser event by accounting for
- * inconsistencies in browser DOM APIs.
- *
- * @param {object} nativeEvent Native browser event.
- * @return {DOMEventTarget} Target node.
- */
-
 function getEventTarget$1(nativeEvent) {
   var target = nativeEvent.target || nativeEvent.srcElement || window;
 
@@ -5997,10 +5830,6 @@ var isEventSupported_1 = isEventSupported$1;
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * 
- */
-
-/**
- * @see http://www.whatwg.org/specs/web-apps/current-work/multipage/the-input-element.html#input-type-attr-summary
  */
 
 var supportedInputTypes = {
@@ -6347,16 +6176,6 @@ var ChangeEventPlugin_1 = ChangeEventPlugin$1;
  *
  */
 
-/**
- * Module that is injectable into `EventPluginHub`, that specifies a
- * deterministic ordering of `EventPlugin`s. A convenient way to reason about
- * plugins, without having to package every one of them. This is better than
- * having plugins be ordered in the same order that they are injected because
- * that ordering would be influenced by the packaging order.
- * `ResponderEventPlugin` must occur before `SimpleEventPlugin` so that
- * preventing default on events is convenient in `SimpleEventPlugin` handlers.
- */
-
 var DefaultEventPluginOrder$1 = ['ResponderEventPlugin', 'SimpleEventPlugin', 'TapEventPlugin', 'EnterLeaveEventPlugin', 'ChangeEventPlugin', 'SelectEventPlugin', 'BeforeInputEventPlugin'];
 
 var DefaultEventPluginOrder_1 = DefaultEventPluginOrder$1;
@@ -6439,11 +6258,6 @@ var ViewportMetrics_1 = ViewportMetrics$1;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- */
-
-/**
- * Translation from modifier key to the associated property in the event.
- * @see http://www.w3.org/TR/DOM-Level-3-Events/#keys-Modifiers
  */
 
 var modifierKeyToProp = {
@@ -6872,10 +6686,6 @@ var DOMNamespaces_1 = DOMNamespaces$1;
 
 /* globals MSApp */
 
-/**
- * Create a function which has 'unsafe' privileges (required by windows8 apps)
- */
-
 var createMicrosoftUnsafeLocalFunction$3 = function (func) {
   if (typeof MSApp !== 'undefined' && MSApp.execUnsafeLocalFunction) {
     return function (arg0, arg1, arg2, arg3) {
@@ -7009,12 +6819,6 @@ var setInnerHTML_1 = setInnerHTML$2;
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
- */
-
-// code copied and modified from escape-html
-/**
- * Module variables.
- * @private
  */
 
 var matchHtmlRegExp = /["'&<>]/;
@@ -7242,17 +7046,6 @@ DOMLazyTree$1.queueText = queueText;
 
 var DOMLazyTree_1 = DOMLazyTree$1;
 
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- * @typechecks
- */
-
 var invariant$20 = invariant_1;
 
 /**
@@ -7367,18 +7160,6 @@ function createArrayFromMixed$1(obj) {
 
 var createArrayFromMixed_1 = createArrayFromMixed$1;
 
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- */
-
-/*eslint-disable fb-www/unsafe-html */
-
 var ExecutionEnvironment$10 = ExecutionEnvironment_1;
 
 var invariant$21 = invariant_1;
@@ -7459,19 +7240,6 @@ function getMarkupWrap$1(nodeName) {
 }
 
 var getMarkupWrap_1 = getMarkupWrap$1;
-
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- * @typechecks
- */
-
-/*eslint-disable fb-www/unsafe-html*/
 
 var ExecutionEnvironment$9 = ExecutionEnvironment_1;
 
@@ -7674,9 +7442,6 @@ function replaceDelimitedText(openingComment, closingComment, stringText) {
 }
 
 var dangerouslyReplaceNodeWithMarkup = Danger.dangerouslyReplaceNodeWithMarkup;
-/**
- * Operations for updating with DOM children.
- */
 var DOMChildrenOperations$1 = {
   dangerouslyReplaceNodeWithMarkup: dangerouslyReplaceNodeWithMarkup,
 
@@ -7767,10 +7532,6 @@ var ReactComponentBrowserEnvironment_1 = ReactComponentBrowserEnvironment$1;
  *
  */
 
-/**
- * @param {DOMElement} node input/textarea to focus
- */
-
 function focusNode$1(node) {
   // IE8 can throw "Can't move focus to the control because it is invisible,
   // not enabled, or of a type that does not accept the focus." for all kinds of
@@ -7802,10 +7563,6 @@ var AutoFocusUtils_1 = AutoFocusUtils$1;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- */
-
-/**
- * CSS properties which accept numbers but are not in units of "px".
  */
 
 var isUnitlessNumber = {
@@ -7948,16 +7705,6 @@ var CSSProperty_1 = CSSProperty$1;
 
 var CSSProperty$2 = CSSProperty_1;
 var isUnitlessNumber$1 = CSSProperty$2.isUnitlessNumber;
-/**
- * Convert a value into the proper css writable value. The style name `name`
- * should be logical (no hyphens), as specified
- * in `CSSProperty.isUnitlessNumber`.
- *
- * @param {string} name CSS property name such as `topMargin`.
- * @param {*} value CSS property value such as `10px`.
- * @param {ReactDOMComponent} component
- * @return {string} Normalized style value with dimensions applied.
- */
 function dangerousStyleValue$1(name, value, component, isCustomProperty) {
   // Note that we've removed escapeTextForBrowser() calls here since the
   // whole string will be escaped when the attribute is injected into
@@ -7986,17 +7733,6 @@ function dangerousStyleValue$1(name, value, component, isCustomProperty) {
 }
 
 var dangerousStyleValue_1 = dangerousStyleValue$1;
-
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- * @typechecks
- */
 
 var _uppercasePattern = /([A-Z])/g;
 
@@ -8056,10 +7792,6 @@ var hyphenateStyleName_1 = hyphenateStyleName$1;
  * @typechecks static-only
  */
 
-/**
- * Memoizes the return value of a function that accepts one string argument.
- */
-
 function memoizeStringOnly$1(callback) {
   var cache = {};
   return function (string) {
@@ -8097,9 +7829,6 @@ if (ExecutionEnvironment$11.canUseDOM) {
   }
 }
 
-/**
- * Operations for dealing with CSS properties.
- */
 var CSSPropertyOperations$1 = {
   /**
    * Serializes a mapping of style properties for use as inline styles:
@@ -9182,12 +8911,6 @@ function updateOptionsIfPendingUpdateAndMounted() {
   }
 }
 
-/**
- * @param {ReactDOMComponent} inst
- * @param {boolean} multiple
- * @param {*} propValue A stringable (with `multiple`, a list of stringables).
- * @private
- */
 function updateOptions(inst, multiple, propValue) {
   var selectedValue, i;
   var options = ReactDOMComponentTree$13.getNodeFromInstance(inst).options;
@@ -9573,15 +9296,6 @@ var ReactComponentEnvironment_1 = ReactComponentEnvironment$1;
  *
  */
 
-/**
- * `ReactInstanceMap` maintains a mapping from a public facing stateful
- * instance (key) and the internal representation (value). This allows public
- * methods to accept the user facing instance as an argument and map them back
- * to internal methods.
- */
-
-// TODO: Replace this with ES6: var ReactInstanceMap = new Map();
-
 var ReactInstanceMap$1 = {
   /**
    * This API should be called `delete` but we'd have to make sure to always
@@ -9708,18 +9422,6 @@ var shallowEqual_1 = shallowEqual$2;
  *
  */
 
-/**
- * Given a `prevElement` and `nextElement`, determines if the existing
- * instance should be updated as opposed to being destroyed or replaced by a new
- * instance. Both arguments are elements. This ensures that this logic can
- * operate on stateless trees without any backing instance.
- *
- * @param {?object} prevElement
- * @param {?object} nextElement
- * @return {boolean} True if the existing instance should be updated.
- * @protected
- */
-
 function shouldUpdateReactComponent$2(prevElement, nextElement) {
   var prevEmpty = prevElement === null || prevElement === false;
   var nextEmpty = nextElement === null || nextElement === false;
@@ -9778,39 +9480,7 @@ function isPureComponent(Component) {
   return !!(Component.prototype && Component.prototype.isPureReactComponent);
 }
 
-/**
- * ------------------ The Life-Cycle of a Composite Component ------------------
- *
- * - constructor: Initialization of state. The instance is now retained.
- *   - componentWillMount
- *   - render
- *   - [children's constructors]
- *     - [children's componentWillMount and render]
- *     - [children's componentDidMount]
- *     - componentDidMount
- *
- *       Update Phases:
- *       - componentWillReceiveProps (only called if parent updated)
- *       - shouldComponentUpdate
- *         - componentWillUpdate
- *           - render
- *           - [children's constructors or receive props phases]
- *         - componentDidUpdate
- *
- *     - componentWillUnmount
- *     - [children's componentWillUnmount]
- *   - [children destroyed]
- * - (destroyed): The instance is now blank, released by React and ready for GC.
- *
- * -----------------------------------------------------------------------------
- */
-
-/**
- * An incrementing ID assigned to each component when it is mounted. This is
- * used to enforce the order in which `ReactUpdates` updates dirty components.
- *
- * @private
- */
+// Separated into a function to contain deoptimizations caused by try/finally.
 var nextMountID = 1;
 
 /**
@@ -10562,7 +10232,6 @@ var ReactCompositeComponent = ReactCompositeComponent_1;
 var ReactEmptyComponent = ReactEmptyComponent_1;
 var ReactHostComponent = ReactHostComponent_1;
 
-// To avoid a cyclic dependency, we create the final class in this module
 var ReactCompositeComponentWrapper = function (element) {
   this.construct(element);
 };
@@ -10655,13 +10324,6 @@ var instantiateReactComponent_1 = instantiateReactComponent$1;
  * 
  */
 
-/**
- * Escape and wrap key so it is safe to use as a reactid
- *
- * @param {string} key to be escaped.
- * @return {string} the escaped key.
- */
-
 function escape$1(key) {
   var escapeRegex = /[=:]/g;
   var escaperLookup = {
@@ -10712,9 +10374,6 @@ var KeyEscapeUtils_1$2 = KeyEscapeUtils$3;
  * 
  */
 
-// The Symbol used to tag the ReactElement type. If there is no native Symbol
-// nor polyfill, then a plain number is used for performance.
-
 var REACT_ELEMENT_TYPE$4 = typeof Symbol === 'function' && Symbol['for'] && Symbol['for']('react.element') || 0xeac7;
 
 var ReactElementSymbol$2 = REACT_ELEMENT_TYPE$4;
@@ -10729,8 +10388,6 @@ var ReactElementSymbol$2 = REACT_ELEMENT_TYPE$4;
  *
  * 
  */
-
-/* global Symbol */
 
 var ITERATOR_SYMBOL$1 = typeof Symbol === 'function' && Symbol.iterator;
 var FAUX_ITERATOR_SYMBOL$1 = '@@iterator'; // Before Symbol spec.
@@ -10768,12 +10425,16 @@ var SEPARATOR$1 = '.';
 var SUBSEPARATOR$1 = ':';
 
 /**
- * Generate a key string that identifies a component within a set.
+ * This is inlined from ReactElement since this file is shared between
+ * isomorphic and renderers. We could extract this to a
  *
- * @param {*} component A component that could contain a manual key.
- * @param {number} index Index that is used if a manual key is not provided.
- * @return {string}
  */
+
+/**
+ * TODO: Test that a single child and an array with one item have the same key
+ * pattern.
+ */
+
 function getComponentKey$1(component, index) {
   // Do some typechecking here since we call this blindly. We want to ensure
   // that we don't block potential future ES APIs.
@@ -11104,12 +10765,6 @@ var ReactChildReconciler$1 = {
 var ReactChildReconciler_1 = ReactChildReconciler$1;
 
 var traverseAllChildren$4 = traverseAllChildren_1$2;
-/**
- * @param {function} traverseContext Context passed through traversal.
- * @param {?ReactComponent} child React child component.
- * @param {!string} name String name of key path to child.
- * @param {number=} selfDebugID Optional debugID of the current internal instance.
- */
 function flattenSingleChildIntoContext(traverseContext, child, name, selfDebugID) {
   // We found a component instance.
   if (traverseContext && typeof traverseContext === 'object') {
@@ -11147,13 +10802,6 @@ var ReactReconciler$3 = ReactReconciler_1;
 var ReactChildReconciler = ReactChildReconciler_1;
 
 var flattenChildren$1 = flattenChildren_1;
-/**
- * Make an update for markup to be rendered and inserted at a supplied index.
- *
- * @param {string} markup Markup that renders into an element.
- * @param {number} toIndex Destination index.
- * @private
- */
 function makeInsertMarkup(markup, afterNode, toIndex) {
   // NOTE: Null values reduce hidden classes.
   return {
@@ -11260,12 +10908,6 @@ function processQueue(inst, updateQueue) {
   ReactComponentEnvironment.processChildrenUpdates(inst, updateQueue);
 }
 
-/**
- * ReactMultiChild are capable of reconciling multiple children.
- *
- * @class ReactMultiChild
- * @internal
- */
 var ReactMultiChild$1 = {
   /**
    * Provides common functionality for components that must reconcile multiple
@@ -11951,10 +11593,6 @@ function getDeclarationErrorAddendum(internalInstance) {
   return '';
 }
 
-/**
- * @param {object} component
- * @param {?object} props
- */
 function assertValidProps(component, props) {
   if (!props) {
     return;
@@ -12005,8 +11643,6 @@ function optionPostMount() {
   ReactDOMOption.postMountWrapper(inst);
 }
 
-// There are so many media events, it makes sense to just
-// maintain a list rather than create a `trapBubbledEvent` for each
 var mediaEvents = {
   topAbort: 'abort',
   topCanPlay: 'canplay',
@@ -12799,10 +12435,6 @@ var ReactDOMEmptyComponent_1 = ReactDOMEmptyComponent$1;
 
 var _prodInvariant$29 = reactProdInvariant_1$2;
 
-/**
- * Return the lowest common ancestor of A and B, or null if they are in
- * different trees.
- */
 function getLowestCommonAncestor(instA, instB) {
   !('_hostNode' in instA) ? _prodInvariant$29('33') : void 0;
   !('_hostNode' in instB) ? _prodInvariant$29('33') : void 0;
@@ -12927,21 +12559,6 @@ var DOMLazyTree$5 = DOMLazyTree_1;
 var ReactDOMComponentTree$16 = ReactDOMComponentTree_1;
 
 var escapeTextContentForBrowser$4 = escapeTextContentForBrowser_1;
-/**
- * Text nodes violate a couple assumptions that React makes about components:
- *
- *  - When mounting text into the DOM, adjacent text nodes are merged.
- *  - Text nodes cannot be assigned a React root ID.
- *
- * This component is used to wrap strings between comment nodes so that they
- * can undergo the same reconciliation that is applied to elements.
- *
- * TODO: Investigate representing React components in the DOM with text nodes.
- *
- * @class ReactDOMTextComponent
- * @extends ReactComponent
- * @internal
- */
 var ReactDOMTextComponent$1 = function (text) {
   // TODO: This is really a ReactText (ReactNode), not a ReactElement
   this._currentElement = text;
@@ -13108,24 +12725,6 @@ var ReactDefaultBatchingStrategy$1 = {
 
 var ReactDefaultBatchingStrategy_1 = ReactDefaultBatchingStrategy$1;
 
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- * @typechecks
- */
-
 var emptyFunction$10 = emptyFunction_1;
 
 /**
@@ -13196,17 +12795,6 @@ var EventListener_1 = EventListener$1;
  * of patent rights can be found in the PATENTS file in the same directory.
  *
  * @typechecks
- */
-
-/**
- * Gets the scroll position of the supplied element or window.
- *
- * The return values are unbounded, unlike `getScrollPosition`. This means they
- * may be negative or exceed the element boundaries (which is possible using
- * inertial scrolling).
- *
- * @param {DOMWindow|DOMElement} scrollable
- * @return {object} Map with `x` and `y` keys.
  */
 
 function getUnboundedScrollPosition$1(scrollable) {
@@ -13397,13 +12985,6 @@ var ReactInjection_1 = ReactInjection$1;
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- */
-
-/**
- * Given any node return the first leaf node without children.
- *
- * @param {DOMElement|DOMTextNode} node
- * @return {DOMElement|DOMTextNode}
  */
 
 function getLeafNode(node) {
@@ -13661,21 +13242,6 @@ var ReactDOMSelection$1 = {
 
 var ReactDOMSelection_1 = ReactDOMSelection$1;
 
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- * @typechecks
- */
-
-/**
- * @param {*} object The object to check.
- * @return {boolean} Whether or not the object is a DOM node.
- */
 function isNode$1(object) {
   var doc = object ? object.ownerDocument || object : document;
   var defaultView = doc.defaultView || window;
@@ -13683,17 +13249,6 @@ function isNode$1(object) {
 }
 
 var isNode_1 = isNode$1;
-
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- * @typechecks
- */
 
 var isNode = isNode_1;
 
@@ -13706,17 +13261,6 @@ function isTextNode$1(object) {
 }
 
 var isTextNode_1 = isTextNode$1;
-
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- * 
- */
 
 var isTextNode = isTextNode_1;
 
@@ -13745,29 +13289,6 @@ function containsNode$1(outerNode, innerNode) {
 
 var containsNode_1 = containsNode$1;
 
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- * @typechecks
- */
-
-/* eslint-disable fb-www/typeof-undefined */
-
-/**
- * Same as document.activeElement but wraps in a try-catch block. In IE it is
- * not safe to call document.activeElement if there is nothing focused.
- *
- * The activeElement will be null only if the document or document body is not
- * yet defined.
- *
- * @param {?DOMDocument} doc Defaults to current document.
- * @return {?DOMElement}
- */
 function getActiveElement$1(doc) /*?DOMElement*/{
   doc = doc || (typeof document !== 'undefined' ? document : undefined);
   if (typeof doc === 'undefined') {
@@ -13970,20 +13491,6 @@ var ON_DOM_READY_QUEUEING = {
  */
 var TRANSACTION_WRAPPERS$3 = [SELECTION_RESTORATION, EVENT_SUPPRESSION, ON_DOM_READY_QUEUEING];
 
-/**
- * Currently:
- * - The order that these are listed in the transaction is critical:
- * - Suppresses events.
- * - Restores selection range.
- *
- * Future:
- * - Restore document/overflow scroll positions that were unintentionally
- *   modified via DOM insertions above the top viewport boundary.
- * - Implement/integrate with customized constraint based layout system and keep
- *   track of which dimensions must be remeasured.
- *
- * @class ReactReconcileTransaction
- */
 function ReactReconcileTransaction$1(useCreateElement) {
   this.reinitializeTransaction();
   // Only server-side rendering really needs this option (see
@@ -14614,17 +14121,6 @@ var SyntheticFocusEvent_1 = SyntheticFocusEvent$1;
  *
  */
 
-/**
- * `charCode` represents the actual "character code" and is safe to use with
- * `String.fromCharCode`. As such, only keys that correspond to printable
- * characters produce a valid `charCode`, the only exception to this is Enter.
- * The Tab-key is considered non-printable and does not have a `charCode`,
- * presumably because it does not produce a tab-character in browsers.
- *
- * @param {object} nativeEvent Native browser event.
- * @return {number} Normalized `charCode` property.
- */
-
 function getEventCharCode$2(nativeEvent) {
   var charCode;
   var keyCode = nativeEvent.keyCode;
@@ -14966,24 +14462,6 @@ var SyntheticWheelEvent = SyntheticWheelEvent_1;
 
 var emptyFunction$11 = emptyFunction_1;
 var getEventCharCode = getEventCharCode_1;
-/**
- * Turns
- * ['abort', ...]
- * into
- * eventTypes = {
- *   'abort': {
- *     phasedRegistrationNames: {
- *       bubbled: 'onAbort',
- *       captured: 'onAbortCapture',
- *     },
- *     dependencies: ['topAbort'],
- *   },
- *   ...
- * };
- * topLevelEventsToDispatchConfig = {
- *   'topAbort': { sameConfig }
- * };
- */
 var eventTypes$4 = {};
 var topLevelEventsToDispatchConfig = {};
 ['abort', 'animationEnd', 'animationIteration', 'animationStart', 'blur', 'canPlay', 'canPlayThrough', 'click', 'contextMenu', 'copy', 'cut', 'doubleClick', 'drag', 'dragEnd', 'dragEnter', 'dragExit', 'dragLeave', 'dragOver', 'dragStart', 'drop', 'durationChange', 'emptied', 'encrypted', 'ended', 'error', 'focus', 'input', 'invalid', 'keyDown', 'keyPress', 'keyUp', 'load', 'loadedData', 'loadedMetadata', 'loadStart', 'mouseDown', 'mouseMove', 'mouseOut', 'mouseOver', 'mouseUp', 'paste', 'pause', 'play', 'playing', 'progress', 'rateChange', 'reset', 'scroll', 'seeked', 'seeking', 'stalled', 'submit', 'suspend', 'timeUpdate', 'touchCancel', 'touchEnd', 'touchMove', 'touchStart', 'transitionEnd', 'volumeChange', 'waiting', 'wheel'].forEach(function (event) {
@@ -15497,16 +14975,24 @@ function hasNonRootReactChild(container) {
 }
 
 /**
- * True if the supplied DOM node is a valid node element.
+ * True if the supplied DOM node is a React DOM element and
+ * it has been rendered by another copy of React.
  *
  * @param {?DOMElement} node The candidate DOM node.
- * @return {boolean} True if the DOM is a valid DOM node.
+ * @return {boolean} True if the DOM has been rendered by another copy of React
  * @internal
  */
 function isValidContainer(node) {
   return !!(node && (node.nodeType === ELEMENT_NODE_TYPE$1 || node.nodeType === DOC_NODE_TYPE || node.nodeType === DOCUMENT_FRAGMENT_NODE_TYPE$1));
 }
 
+/**
+ * True if the supplied DOM node is a valid React node element.
+ *
+ * @param {?DOMElement} node The candidate DOM node.
+ * @return {boolean} True if the DOM is a valid React DOM node.
+ * @internal
+ */
 function getHostRootInstanceInContainer(container) {
   var rootEl = getReactRootElementInContainer(container);
   var prevHostInstance = rootEl && ReactDOMComponentTree$20.getInstanceFromNode(rootEl);
@@ -15814,14 +15300,6 @@ var ReactDOMComponentTree$21 = ReactDOMComponentTree_1;
 var ReactInstanceMap$5 = ReactInstanceMap_1;
 
 var getHostComponentFromComposite$1 = getHostComponentFromComposite_1;
-/**
- * Returns the DOM node rendered by this element.
- *
- * See https://facebook.github.io/react/docs/top-level-api.html#reactdom.finddomnode
- *
- * @param {ReactComponent|DOMElement} componentOrElement
- * @return {?DOMElement} The root node of this element.
- */
 function findDOMNode$1(componentOrElement) {
   if (componentOrElement == null) {
     return null;
@@ -15902,12 +15380,19 @@ var index$3 = ReactDOM_1;
 
 var index_1 = index$3.render;
 
-var Hello = function (props) { return (react_3("h1", null,
-    "Hello from ",
-    props.compiler,
-    " and ",
-    props.framework,
-    "!")); };
-index_1(react_3(Hello, { compiler: "typescript", framework: "react" }), document.getElementById('app'));
+var App = (function (_super) {
+    __extends(App, _super);
+    function App() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    App.prototype.render = function () {
+        return react_3("div", { className: "container" });
+    };
+    App.prototype.componentDidMount = function () {
+        console.log("CDM");
+    };
+    return App;
+}(react_1));
+index_1(react_3(App, null), document.getElementById('app'));
 
 }());

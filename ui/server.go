@@ -19,5 +19,5 @@ func index(w http.ResponseWriter, r *http.Request) {
 
 func bundle(w http.ResponseWriter, r *http.Request) {
 	log.Println("AAAA")
-	http.ServeFile(w, r, "build/bundle.js")
+	http.ServeFile(w, r, "dist/bundle.js")
 }

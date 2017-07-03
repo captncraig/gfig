@@ -1,0 +1,36 @@
+{
+    "tags": [
+        {
+            "name": "Tier",
+            "allow_new_values": false,
+            "initialFilter": true,
+            "values": [
+                "Local",
+                "Dev"
+            ]
+        },
+        {
+            "name": "Data Center",
+            "allow_new_values": false,
+            "initialFilter": true,
+            "values": [
+                "New York",
+                "Colorado"
+            ]
+        },
+        {
+            "name": "Machine",
+            "allow_new_values": true,
+            "initialFilter": false,
+            "values": [
+                "ny-influx01",
+                "ny-influx02"
+            ]
+        }
+    ],
+    "currentTags": {
+        "Tier": "Dev",
+        "Data Center": "New York",
+        "Machine": "ny-influx01"
+    }
+}

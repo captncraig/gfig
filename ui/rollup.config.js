@@ -8,6 +8,15 @@ const plugins = [
     replace({
       'process.env.NODE_ENV': JSON.stringify( 'production' )
     }),
+    typescriptPlugin({
+        // The current rollup-plugin-typescript includes an old version of typescript, so we import and pass our own version
+        typescript,
+        // rollup-plugin-typescript will inject some typescript helpers to your files (normally tsc will
+        // do this). They however have some ES6 keywords like const so they break older browsers.
+        // This instructs rollup-plugin-typescript to import tslib instead, which includes the same helpers
+        // in proper format.
+        importHelpers: true,
+    }),
     // nodeResolve makes rollup look for dependencies in the node_modules directory
     nodeResolve(),
     commonjs({
@@ -26,16 +35,8 @@ const plugins = [
                 'createElement',
             ],
         },
-    }),
-    typescriptPlugin({
-        // The current rollup-plugin-typescript includes an old version of typescript, so we import and pass our own version
-        typescript,
-        // rollup-plugin-typescript will inject some typescript helpers to your files (normally tsc will
-        // do this). They however have some ES6 keywords like const so they break older browsers.
-        // This instructs rollup-plugin-typescript to import tslib instead, which includes the same helpers
-        // in proper format.
-        importHelpers: true,
-    }),
+    })
+    
 ];
 
 export default {

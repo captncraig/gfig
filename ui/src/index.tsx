@@ -1,14 +1,25 @@
 import * as React from 'react';
 import * as ReactDom from 'react-dom';
+import Spinner from './components/spinner'
 
-interface HelloProps {
-    compiler: string;
-    framework: string;
+interface AppState {
+    loaded: boolean
+    error: string
 }
-
-const Hello = (props: HelloProps) => (<h1>Hello from {props.compiler} and {props.framework}!</h1>);
-
+class App extends React.Component<{}, AppState>{
+    public render() {
+        
+        return <div className="container">
+            <Spinner/>
+        </div>
+    }
+    public componentDidMount() {
+        console.log("CDM")
+    }
+}
 ReactDom.render(
-    <Hello compiler="typescript" framework="react" />,
+    <App />,
     document.getElementById('app'),
 );
+
+
