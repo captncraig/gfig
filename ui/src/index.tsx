@@ -2,18 +2,24 @@ import * as React from 'react';
 import * as ReactDom from 'react-dom';
 import { Spinner } from './components/spinner'
 import {Settings} from './components/settings'
-import {SettingsMetadata} from './models'
+import {Filters} from './components/filters'
+
+import {SettingsMetadata, Tagset} from './models'
 
 interface AppState {
     loaded: boolean
     error: string
     metadata: SettingsMetadata
+    filters: Tagset
 }
 
 class App extends React.Component<{}, AppState>{
     constructor() {
         super();
-        this.state = { loaded: false, error: "", metadata: {} as SettingsMetadata };
+        this.state = { loaded: false, error: "", metadata: {} as SettingsMetadata, filters: {} };
+    }
+    filtersChanged = (f: Tagset) => {
+        this.setState({filters: f})
     }
     public render() {
         if (!this.state.loaded) {
@@ -21,7 +27,10 @@ class App extends React.Component<{}, AppState>{
                 <Spinner />
             </div>
         }
-        return <div className="container"><Settings Metadata={this.state.metadata}/></div>
+        return <div className="container">
+            <Filters Tags={this.state.metadata.tags} OnFilterChange={this.filtersChanged} CurrentTags={this.state.metadata.currentTags} />
+            <Settings Metadata={this.state.metadata} />
+        </div>
     }
     public async componentDidMount() {
         try {
