@@ -6,7 +6,17 @@
 .breadcrumbs li { 
   float: left; 
 }
+.clearFilters{
+  float:left;
+  position: relative;
+  left: 20px;
+  font: 18px Sans-Serif;
+  padding-top: 10px;
+  cursor: pointer;
+}
 .breadcrumbs li a {
+  cursor: pointer;
+  user-select: none; 
   color: white;
   text-decoration: none; 
   padding: 10px 0 10px 65px;
@@ -45,7 +55,7 @@
   z-index: 1; 
 }
 .breadcrumbs li:first-child a {
-  padding-left: 10px;
+  padding-left: 8px;
 }
 .breadcrumbs li:nth-child(2) a       { background:        hsla(34,85%,45%,1); }
 .breadcrumbs li:nth-child(2) a:after { border-left-color: hsla(34,85%,45%,1); }

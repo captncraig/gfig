@@ -24953,14 +24953,19 @@ var Filters = (function (_super) {
             _this.setState({ MaxSelected: n });
             _this.updateFilters();
         };
+        _this.clearMax = function () {
+            _this.setState({ MaxSelected: "" });
+            _this.updateFilters();
+        };
         _this.updateFilters = function () {
-            console.log(_this, "@@@");
             var filter = {};
-            for (var _i = 0, _a = _this.props.Tags; _i < _a.length; _i++) {
-                var t = _a[_i];
-                filter[t.name] = _this.state.SelectedTags[t.name];
-                if (t.name == _this.state.MaxSelected) {
-                    break;
+            if (_this.state.MaxSelected != "") {
+                for (var _i = 0, _a = _this.props.Tags; _i < _a.length; _i++) {
+                    var t = _a[_i];
+                    filter[t.name] = _this.state.SelectedTags[t.name];
+                    if (t.name == _this.state.MaxSelected) {
+                        break;
+                    }
                 }
             }
             _this.props.OnFilterChange(filter);
@@ -24975,7 +24980,7 @@ var Filters = (function (_super) {
     }
     Filters.prototype.render = function () {
         var _this = this;
-        var active = true;
+        var active = this.state.MaxSelected != "";
         var breadcrumbs = this.props.Tags.map(function (tag) {
             var cname = "";
             if (!active) {
@@ -24990,7 +24995,9 @@ var Filters = (function (_super) {
                     " ",
                     _this.state.SelectedTags[tag.name]));
         });
-        return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: 'filters' },
+        return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: 'row' },
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "clearFilters", onClick: this.clearMax },
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { className: "glyphicon glyphicon-remove" })),
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("ul", { className: "breadcrumbs" },
                 " ",
                 breadcrumbs,

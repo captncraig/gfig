@@ -15,7 +15,7 @@ interface FilterState {
 
 export class Filters extends React.Component<FiltersProps, FilterState>{
     public render() {
-        var active = true;
+        var active = this.state.MaxSelected != "";
         var breadcrumbs = this.props.Tags.map((tag) => {
             var cname = ""
             if (!active) {
@@ -25,23 +25,29 @@ export class Filters extends React.Component<FiltersProps, FilterState>{
             }
             return <li className={cname} key={tag.name} onClick={this.setMax.bind(this, tag.name)}><a><strong>{tag.name}</strong> {this.state.SelectedTags[tag.name]}</a></li>
         })
-        return <div className='filters'>
+        return <div className='row'>
+            <div className="clearFilters" onClick={this.clearMax}><span className="glyphicon glyphicon-remove"></span></div>
             <ul className="breadcrumbs"> {breadcrumbs} </ul>
         </div>
     }
     setMax = (n: string) => {
-        this.setState({MaxSelected: n})
+        this.setState({ MaxSelected: n })
+        this.updateFilters();
+    }
+    clearMax = () => {
+        this.setState({ MaxSelected: "" });
         this.updateFilters();
     }
 
     updateFilters = () => {
-        console.log(this,"@@@")
-        var filter:  Tagset = {}
-        for(var t of this.props.Tags){
-            filter[t.name] = this.state.SelectedTags[t.name];
-            if (t.name == this.state.MaxSelected){
-                break
-            } 
+        var filter: Tagset = {}
+        if (this.state.MaxSelected != "") {
+            for (var t of this.props.Tags) {
+                filter[t.name] = this.state.SelectedTags[t.name];
+                if (t.name == this.state.MaxSelected) {
+                    break
+                }
+            }
         }
         this.props.OnFilterChange(filter);
     }
@@ -54,7 +60,7 @@ export class Filters extends React.Component<FiltersProps, FilterState>{
         }
         this.state = { SelectedTags: props.CurrentTags, MaxSelected: name }
     }
-    public componentDidMount(){
+    public componentDidMount() {
         this.updateFilters();
     }
 }
