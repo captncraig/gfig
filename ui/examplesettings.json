@@ -6,7 +6,8 @@
             "initialFilter": true,
             "values": [
                 "Local",
-                "Dev"
+                "Dev",
+                "Prod"
             ]
         },
         {
@@ -23,14 +24,36 @@
             "allow_new_values": true,
             "initialFilter": false,
             "values": [
-                "ny-influx01",
-                "ny-influx02"
+                "ny-web01",
+                "ny-web02"
             ]
         }
     ],
     "currentTags": {
         "Tier": "Dev",
         "Data Center": "New York",
-        "Machine": "ny-influx01"
-    }
+        "Machine": "ny-web01"
+    },
+    "settings": [
+        {
+            "name": "core.DomainName",
+            "description": "Domain to use when generating urls for emails, etc... Do **not** include schema.",
+            "type": "string",
+            "default": "example.com"
+        },
+        {
+            "name": "core.Proto",
+            "description": "Should links be generated with http or https? Should be one or other.",
+            "type": "string",
+            "default": "http",
+            "defaults": [
+                {
+                    "tags": {
+                        "Tier": "Prod"
+                    },
+                    "value": "https"
+                }
+            ]
+        }
+    ]
 }

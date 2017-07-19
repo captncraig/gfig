@@ -9906,7 +9906,7 @@ var App = (function (_super) {
         }
         return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "container" },
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4__components_filters__["a" /* Filters */], { Tags: this.state.metadata.tags, OnFilterChange: this.filtersChanged, CurrentTags: this.state.metadata.currentTags }),
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3__components_settings__["a" /* Settings */], { Metadata: this.state.metadata }));
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3__components_settings__["a" /* Settings */], { Settings: this.state.metadata.settings }));
     };
     App.prototype.componentDidMount = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -9925,6 +9925,7 @@ var App = (function (_super) {
                         return [3 /*break*/, 4];
                     case 3:
                         e_1 = _a.sent();
+                        console.log("EEE", e_1);
                         this.setState({ error: e_1 });
                         return [3 /*break*/, 4];
                     case 4: return [2 /*return*/];
@@ -24899,6 +24900,8 @@ module.exports = Loader;
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Settings; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash__ = __webpack_require__(210);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_lodash__);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -24910,13 +24913,18 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 
+
 var Settings = (function (_super) {
     __extends(Settings, _super);
     function Settings() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     Settings.prototype.render = function () {
-        return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", null, "aaa");
+        var groups = __WEBPACK_IMPORTED_MODULE_1_lodash__(this.props.Settings).groupBy(function (s) { return s.name.split('.')[0]; })
+            .map(function (k, v) {
+            return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("h1", { key: v }, v);
+        }).value();
+        return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", null, groups);
     };
     return Settings;
 }(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]));
@@ -24997,7 +25005,7 @@ var Filters = (function (_super) {
         });
         return __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: 'row' },
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "clearFilters", onClick: this.clearMax },
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { className: "glyphicon glyphicon-remove" })),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { className: "fa fa-globe" })),
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("ul", { className: "breadcrumbs" },
                 " ",
                 breadcrumbs,

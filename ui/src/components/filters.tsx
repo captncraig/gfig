@@ -26,10 +26,11 @@ export class Filters extends React.Component<FiltersProps, FilterState>{
             return <li className={cname} key={tag.name} onClick={this.setMax.bind(this, tag.name)}><a><strong>{tag.name}</strong> {this.state.SelectedTags[tag.name]}</a></li>
         })
         return <div className='row'>
-            <div className="clearFilters" onClick={this.clearMax}><span className="glyphicon glyphicon-remove"></span></div>
+            <div className="clearFilters" onClick={this.clearMax}><span className="fa fa-globe"></span></div>
             <ul className="breadcrumbs"> {breadcrumbs} </ul>
         </div>
     }
+
     setMax = (n: string) => {
         this.setState({ MaxSelected: n })
         this.updateFilters();

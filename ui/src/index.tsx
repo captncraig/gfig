@@ -4,19 +4,19 @@ import { Spinner } from './components/spinner'
 import {Settings} from './components/settings'
 import {Filters} from './components/filters'
 
-import {SettingsMetadata, Tagset} from './models'
+import {AppData, Tagset} from './models'
 
 interface AppState {
     loaded: boolean
     error: string
-    metadata: SettingsMetadata
+    metadata: AppData
     filters: Tagset
 }
 
 class App extends React.Component<{}, AppState>{
     constructor() {
         super();
-        this.state = { loaded: false, error: "", metadata: {} as SettingsMetadata, filters: {} };
+        this.state = { loaded: false, error: "", metadata: {} as AppData, filters: {} };
     }
     filtersChanged = (f: Tagset) => {
         this.setState({filters: f})
@@ -29,15 +29,16 @@ class App extends React.Component<{}, AppState>{
         }
         return <div className="container">
             <Filters Tags={this.state.metadata.tags} OnFilterChange={this.filtersChanged} CurrentTags={this.state.metadata.currentTags} />
-            <Settings Metadata={this.state.metadata} />
+            <Settings Settings={this.state.metadata.settings} />
         </div>
     }
     public async componentDidMount() {
         try {
             let resp = await fetch("/api/metadata");
-            let data = await resp.json() as SettingsMetadata;
+            let data = await resp.json() as AppData;
             this.setState({ loaded: true, metadata: data })
         } catch (e) {
+            console.log("EEE", e)
             this.setState({ error: e })
         }
     }

@@ -12,6 +12,7 @@
   left: 20px;
   font: 18px Sans-Serif;
   padding-top: 10px;
+  padding-right: -10px;
   cursor: pointer;
 }
 .breadcrumbs li a {
